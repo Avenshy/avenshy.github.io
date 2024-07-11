@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="雀魂,雀魂牌谱转换,Majsoul">
+    <meta name="description" content="雀魂牌谱链接转换器">
+    <title>雀魂牌谱链接转换器</title>
+</head>
+
+<body>
+    <div>
+        <p><a href="/index.html">🔚回到首页</a> &nbsp; <a href="./index.html">🔙回到雀魂工具箱</a></p>
+    </div>
+    <hr>
+    <h1>雀魂牌谱链接转换器</h1>
+    <p>用于转换普通牌谱链接和匿名牌谱链接，还可以修改进入牌谱时的主视角。</p>
+
+    <fieldset>
+        <legend><b>普通牌谱链接↔️匿名牌谱链接</b></legend>
+        <div style="display: grid;align-items: center;">
+            <textarea id="origin" rows="10" placeholder="这里输入普通牌谱链接，每行一个"></textarea>
+            <br>
+            <div>
+                <button onclick="origin2encode()">⬇️普通转匿名</button>
+                <button onclick="encode2origin()">⬆️匿名转普通</button>
+            </div>
+            <br>
+            <textarea id="encode" rows="10" placeholder="这里输入匿名牌谱链接，每行一个"></textarea>
+            <div id="result"></div>
+        </div>
+
+    </fieldset>
+
+    <hr>
+
+    <fieldset>
+        <legend><b>修改牌谱主视角</b></legend>
+        <p>⚠️请注意，账号id需要通过一定手段获取，可以使用<a href="https://github.com/Avenshy/MajsoulMax" target="_blank">MajsoulMax</a>。
+        </p>
+        <div style="display: grid;align-items: center;">
+            <input id="trans" placeholder="这里输入牌谱链接">
+            <br>
+            <div>
+                <input type="radio" name="trans" id="accountid" checked />
+                <label for="choice1">账号id</label>
+                <input type="radio" name="trans" id="friendid" />
+                <label for="choice2">好友id</label>
+                <input id="inputid" placeholder="这里输入账号id或好友id">
+            </div>
+
+            <br>
+            <div>
+                <button onclick="trans()">🔄转换</button>
+            </div>
+            <br>
+            <input id="transuuid" placeholder="这里是生成的牌谱链接">
+            <div id="transresult"></div>
+        </div>
+    </fieldset>
+
+
+    <hr>
+    <p>👻作者：<a href="https://github.com/Avenshy/" target="_blank">Avenshy</a></p>
+    <p>🍵请作者喝茶：<a href="https://afdian.net/a/Avenshy" target="_blank">爱发电（支持微信/支付宝）</a></p>
+    <p>☕请作者喝咖啡：<a href="https://patreon.com/Avenshy" target="_blank">Patreon（支持信用卡/Paypal）</a></p>
+    <p>✈️TG频道：<a href="https://t.me/Mahjong_Soul">[Channel] 雀魂研究院</a></p>
+    <p>✈️TG交流群：<a href="https://t.me/Mahjong_Soul_Chat">[Chat] 雀魂研究院</a></p>
+
+
+    <script>
+        function encodePaipuUUID(uuid) {
+            let result = '';
+            for (let code0 = '0'.charCodeAt(0), codeA = 'a'.charCodeAt(0), i = 0; i < uuid.length; i++) {
+                let char = uuid.charAt(i);
+                let code = char.charCodeAt(0);
+                let temp = -1;
+                if (code >= code0 && code0 + 10 > code) {
+                    temp = code - code0;
+                } else if (code >= codeA && codeA + 26 > code) {
+                    temp = code - codeA + 10;
+                }
+                if (-1 != temp) {
+                    temp = (temp + 17 + i) % 36;
+                    if (10 > temp) {
+                        result += String.fromCharCode(temp + code0);
+                    } else {
+                        result += String.fromCharCode(temp + codeA - 10);
+                    }
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+        function decodePaipuUUID(uuid) {
+            let result = '';
+            for (let code0 = "0".charCodeAt(0), codeA = "a".charCodeAt(0), i = 0; i < uuid.length; i++) {
+                let char = uuid.charAt(i);
+                let code = char.charCodeAt(0);
+                let temp = -1;
+                if (code >= code0 && code0 + 10 > code) {
+                    temp = code - code0;
+                }
+                else if (code >= codeA && codeA + 26 > code) {
+                    temp = code - codeA + 10;
+                }
+                if (-1 != temp) {
+                    temp = (temp + 55 - i) % 36;
+                    if (10 > temp) {
+                        result += String.fromCharCode(temp + code0);
+                    } else {
+                        result += String.fromCharCode(temp + codeA - 10);
+                    }
+                } else {
+                    result += char;
+                }
+            }
+            return result
+        }
+        function encodeAccountID(id) {
+            return (7 * parseInt(id) + 1117113 ^ 86216345) + 1358437;
+        }
+        function decodeAccountID(id) {
+            return ((parseInt(id) - 1358437 ^ 86216345) - 1117113) / 7;
+        }
+        function encode_account_id2(p) {
+            p = 6139246 ^ p;
+            var H = 67108863,
+                S = p & ~H,
+                Z = p & H;
+            return Z = (511 & Z) << 17 | Z >> 9,
+                Z = (511 & Z) << 17 | Z >> 9,
+                Z = (511 & Z) << 17 | Z >> 9,
+                Z = (511 & Z) << 17 | Z >> 9,
+                Z = (511 & Z) << 17 | Z >> 9,
+                Z + S + 1e7
+        }
+        function decode_account_id2(p) {
+            var H = 67108863;
+            p -= 1e7;
+            var S = p & ~H,
+                Z = p & H;
+            return Z = (131071 & Z) << 9 | Z >> 17,
+                Z = (131071 & Z) << 9 | Z >> 17,
+                Z = (131071 & Z) << 9 | Z >> 17,
+                Z = (131071 & Z) << 9 | Z >> 17,
+                Z = (131071 & Z) << 9 | Z >> 17,
+                S + Z ^ 6139246
+        }
+        function getZone(id) {
+            let i = parseInt(id) >> 23;
+            if (0 <= i <= 6) {
+                return 'CN';
+            }
+            else if (7 <= i <= 12) {
+                return 'JP';
+            }
+            else if (13 <= i <= 15) {
+                return 'EN';
+            }
+            else {
+                return undefined;
+            }
+        }
+        function origin2encode() {
+            let arr = document.querySelector('#origin').value.trimStart().trimEnd().split('\n');
+            let encode = '';
+            let result = '<p>💡普通转匿名结果：</p>';
+            for (let i = 0; i < arr.length; i++) {
+                let uuid = /([a-z0-9]{6}\-[a-z0-9]{8}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{12})_a(\d+)(_2)?/.exec(arr[i]);
+                if (uuid !== null) {
+                    if (uuid[3] === undefined) {
+                        encodeUUID = encodePaipuUUID(uuid[1]);
+                        encode += arr[i].replace(uuid[0], encodeUUID + '_a' + uuid[2] + '_2\n');
+                        let accountid = decodeAccountID(uuid[2]);
+                        result += '<p>' + (i + 1) + ': <b>' + uuid[1] + '</b> -> <b>' + encodeUUID + '</b> 主视角账号id: <b>' + accountid + '</b> 地区: <b>' + getZone(accountid) + '</b> 好友id: <b>' + encode_account_id2(accountid) + '</b></p>';
+
+                    } else {
+                        encode += arr[i] + '\n';
+                        result += '<p>' + (i + 1) + ': <b>' + uuid[0] + '</b> 已是加密链接！</p>';
+                    }
+                } else {
+                    encode += arr[i] + '\n';
+                    result += '<p>' + (i + 1) + ': 未检测到雀魂牌谱链接！</p>';
+                }
+            }
+            document.querySelector('#encode').value = encode;
+            document.querySelector('#result').innerHTML = result;
+        }
+        function encode2origin() {
+            let arr = document.querySelector('#encode').value.trimStart().trimEnd().split('\n');
+            let origin = '';
+            let result = '<p>💡匿名转普通结果：</p>';
+            for (let i = 0; i < arr.length; i++) {
+                let uuid = /([a-z0-9]{6}\-[a-z0-9]{8}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{12})_a(\d+)(_2)?/.exec(arr[i]);
+                if (uuid !== null) {
+                    if (uuid[3] !== undefined) {
+                        originUUID = decodePaipuUUID(uuid[1]);
+                        origin += arr[i].replace(uuid[0], originUUID + '_a' + uuid[2] + '\n');
+                        let accountid = decodeAccountID(uuid[2]);
+                        result += '<p>' + (i + 1) + ': <b>' + uuid[1] + '</b> -> <b>' + originUUID + '</b> 主视角账号id: <b>' + accountid + '</b> 地区: <b>' + getZone(accountid) + '</b> 好友id: <b>' + encode_account_id2(accountid) + '</b></p>';
+
+                    } else {
+                        origin += arr[i] + '\n';
+                        result += '<p>' + (i + 1) + ': <b>' + uuid[0] + '</b> 已是普通链接！</p>';
+                    }
+                } else {
+                    origin += arr[i] + '\n';
+                    result += '<p>' + (i + 1) + ': 未检测到雀魂牌谱链接！</p>';
+                }
+            }
+            document.querySelector('#origin').value = origin;
+            document.querySelector('#result').innerHTML = result;
+        }
+        function trans() {
+            let text = document.querySelector('#trans').value;
+            let uuid = /([a-z0-9]{6}\-[a-z0-9]{8}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{12})_a(\d+)(_2)?/.exec(text);
+            let result = '';
+            let accountid;
+            if (uuid !== null) {
+                if (document.querySelector('#accountid').checked) {
+                    accountid = encodeAccountID(document.querySelector('#inputid').value);
+                } else {
+                    accountid = encodeAccountID(decode_account_id2(document.querySelector('#inputid').value));
+                }
+                document.querySelector('#transuuid').value = text.replace(uuid[2], accountid);
+
+                result = '<p>转换完成！</p>';
+            } else {
+                result = '<p>转换失败：未检测到雀魂牌谱链接</p>';
+            }
+            document.querySelector('#transresult').innerHTML = result;
+
+        }
+    </script>
+
+</body>
+
+</html>
