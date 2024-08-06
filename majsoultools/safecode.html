@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="雀魂,雀魂续命,Majsoul,">
+        <meta name="description" content="雀魂续命代码更新方法">
+        <title></title>
+    </head>
+    <body>
+        <div>
+            <p><a href="/index.html">🔚回到首页</a> &nbsp; <a href="./index.html">🔙回到雀魂工具箱</a></p>
+        </div>
+        <hr>
+        <h1>雀魂续命代码更新方法</h1>
+        <p>用于去除code.js中的检测代码，降低封号概率。</p>
+        <fieldset>
+            <legend><b>图文方法</b></legend>
+            <p>1、在网页版下载最新的code.js文件</p>
+            <p>2、使用<b>能够处理代码</b>的文本编辑器打开此文件并进行代码格式化</p>
+            <p>3、以正则表达式搜索，并定位到代码片段</p>
+            <code>for\s\(var\s\w,\s\w,\s\w,\s\w,\s\w\s=\sfunction\s\(\w,\s\w\)\s{</code>
+            <p>4、删除左图中红框内容，改为右边并保存</p>
+            <img src="./safecode_01.png" />
+            <p>5、以正则表达式搜索，并定位到代码片段</p>
+            <code>Date\.now\(\),\s+function</code>
+            <p>6、删除左图中红框内容，改为右边并保存</p>
+            <img src="./safecode_02.png" />
+        </fieldset>
+        <style>
+            code {
+                background-color: #afb8c133;
+                padding: .2em .4em;
+                border-radius: 6px;
+            }
+            </style>
+    </body>
